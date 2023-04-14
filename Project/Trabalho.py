@@ -21,7 +21,7 @@ def preencher_tabelas():
                 conexão.commit()
 
             arquivo.close()
-    with open('Contas.txt', 'r') as file:
+    with open('Project/Contas.txt', 'r') as file:
             for frase in file:
                 
             
@@ -426,6 +426,15 @@ try:
         time.sleep(1)
         print('[~] Inserindo informações já registradas....')
         preencher_tabelas()
+        print('\n\t[+] Banco de dados preenchido!')
+        opcao_esc = input('>> Deseja fazer alguma alteração no banco?(y/n): ')
+        if opcao_esc == 'y':
+            time.sleep(1)
+            escolhas()
+        elif opcao_esc == 'n':
+            print('-- Saindo, até logo!')
+        else:
+            print('\n[-] Opção inválida!\n')
     else:
 
         cursor.execute('SELECT * FROM pessoa')
