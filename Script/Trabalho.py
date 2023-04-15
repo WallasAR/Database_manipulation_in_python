@@ -3,7 +3,7 @@ import os
 import time
 
 def preencher_tabelas():
-    with open('Project/Nomes.txt', 'r') as arquivo:
+    with open('Database/Nomes.txt', 'r') as arquivo:
             for frase in arquivo:
                 
             
@@ -21,7 +21,7 @@ def preencher_tabelas():
                 conexão.commit()
 
             arquivo.close()
-    with open('Project/Contas.txt', 'r') as file:
+    with open('Database/Contas.txt', 'r') as file:
             for frase in file:
                 
             
@@ -390,7 +390,7 @@ def atualizar_dados():
 try:
 
     
-    conexão = banco.connect('project/Banco.db')
+    conexão = banco.connect('Database/Banco.db')
     os.system('cls')
     print('[*] Conectando-se ao banco de dados...')
     time.sleep(3)
