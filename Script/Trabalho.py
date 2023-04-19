@@ -300,6 +300,8 @@ def inserir_dados():
     nome_meioF = bool(nome_meio)
     if nome_meioF == 0:
         nome_meioF = 'Vazio'
+    else:
+        nome_meioF = nome_meio
     
     cursor.execute(f"""INSERT INTO pessoa(cpf, primeiro_nome, nome_do_meio, sobrenome, Idade, conta) VALUES('{CPF}', '{nome}', '{nome_meioF}', '{sobrenome}', '{idade}', '{conta}')""")
     conexão.commit()
