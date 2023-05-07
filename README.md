@@ -34,6 +34,6 @@ consultation by name, by balance, by age, etc.).
 * Read and print the results of queries through the
 created files.
 
-Honorable mention to [@Takushi27](https://github.com/Takushi27) who made a big part of this project, thank you!
+### Honorable mention to [@Takushi27](https://github.com/Takushi27) who made a big part of this project, thank you!
 
 
