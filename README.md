@@ -1,35 +1,35 @@
 # Example manipulation with database in Python
 
-1. O trabalho consiste em desenvolver uma aplicação em Python que
-faça uma ligação entre um Banco de Dados e arquivos de texto.
-Obs.: Toda manipulação dos dados no banco deverão ser feitas via
-código.
+1. The work consists of developing an application in Python that
+make a connection between a Database and text files.
+Obs.: All manipulation of the data in the bank must be done via
+code.
 
-2. Pontos principais do trabalho:
-* Criar um Banco de Dados com as seguintes tabelas:
+2. Main points of the work:
+* Create a Database with the following tables:
 
-	> Pessoa 
+> Person
  
-	|      CPF      | Primeiro nome | Nome do meio  |    Sobrenome  |    Idade     |     Conta     |
-	| ------------- | ------------- | ------------- | ------------- |------------- | ------------- |
-	|     ...       |      ...      |      ...      |      ...      |     ...      |      ...      |     
+| CPF | First name | Middle name | Last name | Age | Account |
+| ------------- | ------------- | ------------- | ------------- |------------- | ------------- |
+| ... | ... | ... | ... | ... | ... |
 
 
-	> Conta
+> account
 
-	|   Agência     |    Número     |     Saldo     |    Gerente    |    Idade     |    Titular    |
-	| ------------- | ------------- | ------------- | ------------- |------------- | ------------- |
-	|     ...       |      ...      |      ...      |      ...      |     ...      |      ...      | 
+| Agency | Number | Balance | Manager | Age | Holder |
+| ------------- | ------------- | ------------- | ------------- |------------- | ------------- |
+| ... | ... | ... | ... | ... | ... |
 
 
-* Preencher as tabelas a partir de um arquivo `.txt`
-	- Os arquivos nome e conta estarão disponibilizados.
-	- O programa terá de substituir os espaços por vírgulas.
-* Permitir adição, remoção e edição de qualquer linha do banco.
-* Realizar consultas no banco de dados e guardar o resultado em
-novos arquivos de texto.
-    - Organizar as consultas por tipo em pastas diferentes (ex.:
-consulta por nome, por saldo, por idade, etc.).
-    - Caso a pasta não exista, criar uma nova.
-* Ler e imprimir os resultados das consultas através dos
-arquivos criados.
+* Populate the tables from a `.txt` file
+- The name and account files will be available.
+- The program will have to replace spaces with commas.
+* Allow addition, removal and editing of any bank line.
+* Perform database queries and save the result in
+new text files.
+    - Organize queries by type in different folders (eg:
+consultation by name, by balance, by age, etc.).
+    - If the folder does not exist, create a new one.
+* Read and print the results of queries through the
+created files.
