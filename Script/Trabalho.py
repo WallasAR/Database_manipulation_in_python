@@ -1,6 +1,7 @@
 import sqlite3 as banco
 import os
 import time
+from tkinter import *
 
 def preencher_tabelas():
     with open('Database/Nomes.txt', 'r') as arquivo:
@@ -458,3 +459,20 @@ finally:
     if conexão:
         conexão.close
         print('\n>> Conexão Encerrada')
+
+# User Interface
+
+window = Tk()
+
+window.title('Database')
+window.configure(background= '#ccc')
+
+Label(window, text="Selecione o que deseja fazer")
+Button(window, text="Consultar")
+
+Button(window, text="Inserir")
+Button(window, text ='Deletar')
+Button(window, text='Atualizar')
+
+
+window.mainloop()
