@@ -1,7 +1,10 @@
-import sqlite3 as banco
+import sqlite3 as db
 import os
 import time
-from tkinter import *
+
+conexão = db.connect('Database/Database.db')
+cursor = conexão.cursor()
+
 
 def preencher_tabelas():
     with open('Database/Nomes.txt', 'r') as arquivo:
@@ -40,7 +43,7 @@ def preencher_tabelas():
 
             arquivo.close()
 
-
+""" #Choise
 def escolhas():
     os.system('cls')
     print('\n\t   -----: Menu :-----')
@@ -64,7 +67,7 @@ def escolhas():
         os.system('cls')
         print('\n[-] Valor inserido inválido! Tente novamente.\n')
         escolhas()
-
+"""
 
 def consulta():
     cursor.execute(f"""SELECT * FROM pessoa""")
@@ -287,11 +290,9 @@ def consulta_save():
     else:
         print('[+] Consultas Finalizadas! Voltando ao menu...')
         time.sleep(2)
-        escolhas()
+        #escolhas()
 
 def inserir_dados():
-    os.system('cls')
-    print('\t- SELECIONADO: INSERIR DADOS - \n>> Insira os seguintes dados: ')
     CPF = input('\n> CPF: ')
     nome = input('> Primeiro nome: ')
     nome_meio = input('> Nome do meio: ')
@@ -316,7 +317,7 @@ def inserir_dados():
     conexão.commit()
     print('\n[+] Dados inseridos com êxito!')
     time.sleep(2)
-    escolhas()
+    #escolhas()
 
 def deletar_dados():
     consulta()
@@ -328,7 +329,7 @@ def deletar_dados():
     conexão.commit()
     print('\n[+] Cliente com ID {} foi deletado com êxito!' .format(con_delete))
     time.sleep(2)
-    escolhas()
+    #escolhas()
 
 
 def atualizar_dados():
@@ -389,90 +390,56 @@ def atualizar_dados():
     else:
         print('>> Okay! Voltando ao menu principal...')
         time.sleep(2)
-        escolhas()
-try:
-
+        #escolhas()
     
-    conexão = banco.connect('Database/Banco.db')
-    os.system('cls')
-    print('[*] Conectando-se ao banco de dados...')
-    time.sleep(3)
-    cursor = conexão.cursor()
-    cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='pessoa';")
-    cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='conta';")
-    table_exist = bool(cursor.fetchone())
-    if not table_exist:
 
-        print('[~] Banco de dados não existe, criando...')
-        time.sleep(5)
-        cursor.execute("""CREATE TABLE pessoa(
-            id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-            cpf VARCHAR(11) NOT NULL,
-            primeiro_nome TEXT NOT NULL,
-            nome_do_meio TEXT,
-            sobrenome TEXT,
-            Idade INTEGER,
-            conta INTEGER,
-            FOREIGN KEY(id) REFERENCES conta(id)
-        );""")
+def criar_tabelas():   
+    try:
 
-        cursor.execute("""CREATE TABLE conta(
-            id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-            Agência VARCHAR(10) NOT NULL,
-            Número VARCHAR(20),
-            Saldo REAL NOT NULL,
-            Gerente INTEGER NOT NULL,
-            Titular INTEGER NOT NULL
-        );""")
+        os.system('cls')
+        print('[*] Conectando-se ao banco de dados...')
+        #time.sleep(3)
+        cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='pessoa';")
+        cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='conta';")
+        table_exist = bool(cursor.fetchone())
+        if not table_exist:
 
-        print('\n[+] Banco de dados criado.\n\n')
-        time.sleep(1)
-        print('[~] Inserindo informações já registradas....')
-        preencher_tabelas()
-        print('\n\t[+] Banco de dados preenchido!')
-        opcao_esc = input('>> Deseja fazer alguma alteração no banco?(y/n): ')
-        if opcao_esc == 'y':
-            time.sleep(1)
-            escolhas()
-        elif opcao_esc == 'n':
-            print('-- Saindo, até logo!')
-        else:
-            print('\n[-] Opção inválida!\n')
-    else:
+            print('[~] Banco de dados não existe, criando...')
+            #time.sleep(5)
+            cursor.execute("""CREATE TABLE pessoa(
+                id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+                cpf VARCHAR(11) NOT NULL,
+                primeiro_nome TEXT NOT NULL,
+                nome_do_meio TEXT,
+                sobrenome TEXT,
+                Idade INTEGER,
+                conta INTEGER,
+                FOREIGN KEY(id) REFERENCES conta(id)
+            );""")
 
-        cursor.execute('SELECT * FROM pessoa')
-        table_preencher = bool(cursor.fetchone())
-        if table_preencher == 1:
+            cursor.execute("""CREATE TABLE conta(
+                id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+                Agência VARCHAR(10) NOT NULL,
+                Número VARCHAR(20),
+                Saldo REAL NOT NULL,
+                Gerente INTEGER NOT NULL,
+                Titular INTEGER NOT NULL
+            );""")
+
+            print('\n[+] Banco de dados criado.\n\n')
+            #time.sleep(1)
+            print('[~] Inserindo informações já registradas....')
+            preencher_tabelas()
             print('\n\t[+] Banco de dados preenchido!')
-            opcao_esc = input('>> Deseja fazer alguma alteração no banco?(y/n): ')
-            if opcao_esc == 'y':
-                time.sleep(1)
-                escolhas()
-            elif opcao_esc == 'n':
-                print('-- Saindo, até logo!')
-            else:
-                print('\n[-] Opção inválida!\n')
+        else:
 
-except Exception as error:
-    print('Ocorreu erro de: {}' .format(error))
-finally:
-    if conexão:
-        conexão.close
-        print('\n>> Conexão Encerrada')
-
-# User Interface
-
-window = Tk()
-
-window.title('Database')
-window.configure(background= '#ccc')
-
-Label(window, text="Selecione o que deseja fazer")
-Button(window, text="Consultar")
-
-Button(window, text="Inserir")
-Button(window, text ='Deletar')
-Button(window, text='Atualizar')
-
-
-window.mainloop()
+            cursor.execute('SELECT * FROM pessoa')
+            table_preencher = bool(cursor.fetchone())
+            if table_preencher == 1:
+                print('\n\t[+] Banco de dados preenchido!')
+                
+    except Exception as error:
+        print('Ocorreu erro de: {}' .format(error))
+    finally:
+        if conexão:
+            conexão.close
