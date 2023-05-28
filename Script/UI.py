@@ -18,6 +18,47 @@ class intercafe():
         self.window.mainloop()
 
 
+    def clickduplopessoa(self, event):
+        self.Table.selection()
+        for n in self.Table.selection():
+            col1, col2, col3, col4, col5, col6, col7 = self.Table.item(n, 'values')
+            self.textInput_id.insert(END, col1)
+            self.textInput_cpf.insert(END, col2)
+            self.textInput_N.insert(END, col3)
+            self.textInput_N_meio.insert(END, col4)
+            self.textInput_sobrenome.insert(END, col5)
+            self.textInput_age.insert(END, col6)
+            self.textInput_conta.insert(END, col7)
+
+    def clickduploconta(self, event):
+        self.Table2.selection()
+        for n in self.Table2.selection():
+            col1, col2, col3, col4, col5, col6 = self.Table2.item(n, 'values')
+            self.textInput_id2.insert(END, col1)
+            self.textInput_agen.insert(END, col2)
+            self.textInput_num.insert(END, col3)
+            self.textInput_saldo.insert(END, col4)
+            self.textInput_gerente.insert(END, col5)
+            self.textInput_titular.insert(END, col6)
+
+
+    def deletepessoa(self):
+        delid = self.textInput_id.get()
+        cursor.execute(f"""DELETE FROM Pessoa WHERE id= ?""", (delid,))
+        self.clearInputs1
+        self.Table.delete(*self.Table.get_children())
+        self.mostrar_tabela1()
+
+
+
+    def deleteconta(self):
+        delid2 = self.textInput_id2.get()
+        cursor.execute(f"""DELETE FROM Conta WHERE id= ?""", (delid2,))
+        self.clearInputs2
+        self.Table2.delete(*self.Table2.get_children())
+        self.mostrar_tabela2()
+    
+
     def inserirpessoa(self):
         cpf = self.textInput_cpf.get()
         nome = self.textInput_N.get()
@@ -28,7 +69,6 @@ class intercafe():
         id = 1500
         id +=1
         cursor.execute(f""" INSERT INTO pessoa(id,cpf, primeiro_nome, nome_do_meio, sobrenome, Idade, conta) VALUES('{id}','{cpf}', '{nome}', '{nomedomeio}', '{sobrenome}', '{idade}', '{conta}')""")
-        conexão.commit()
 
 
     def inserirconta(self):
@@ -40,7 +80,6 @@ class intercafe():
         id = 1500
         id +=1
         cursor.execute(f""" INSERT INTO Conta(id,Agência, Número, Saldo, Gerente, Titular) VALUES('{id}','{agencia}', '{numero}', '{saldo}', '{gerente}', '{titular}')""")
-        conexão.commit()
 
 
     def consultarpessoa(self):
@@ -75,6 +114,30 @@ class intercafe():
             self.Table.insert("", END, values=i)
             self.clearInputs1()
 
+    def update_person(self):
+        update = self.textInput_id.get()
+        cpf = self.textInput_cpf.get()
+        nome = self.textInput_N.get()
+        nomedomeio = self.textInput_N_meio.get()
+        sobrenome = self.textInput_sobrenome.get()
+        idade = self.textInput_age.get()
+        conta = self.textInput_conta.get()
+        self.textInput_id.insert(END, "%")
+        cursor.execute(f""" UPDATE Pessoa SET cpf = ?, sobrenome = ?, idade = ?, conta = ?, primeiro_nome = ?, nome_do_meio = ?  WHERE id = ?""", (cpf,sobrenome,idade,conta,nome,nomedomeio,update,))
+        self.clearInputs1()
+        self.mostrar_tabela1()
+
+    def update_account(self):
+        update2 = self.textInput_id2.get()
+        agencia = self.textInput_agen.get()
+        numero = self.textInput_num.get()
+        saldo = self.textInput_saldo.get()
+        gerente = self.textInput_gerente.get()
+        titular = self.textInput_titular.get()
+        self.textInput_id2.insert(END, "%")
+        cursor.execute(f""" UPDATE Conta SET Agência = ?, Número = ?, Saldo = ?, Gerente = ?, Titular = ?  WHERE id = ?""", (agencia,numero,saldo,gerente,titular,update2,))
+        self.clearInputs2()
+        self.mostrar_tabela2()
 
     def buscarconta(self):
         self.Table2.delete(*self.Table2.get_children())
@@ -85,7 +148,7 @@ class intercafe():
         for i in buscartabela2:
             self.Table2.insert("", END, values=i)
             self.clearInputs2()
-
+    
 
     def clearInputs1(self):
         self.textInput_N.delete(0, END)
@@ -135,10 +198,10 @@ class intercafe():
         insert = Button(self.frame1, text='Inserir', bd=0, command=self.inserirpessoa)
         insert.place(relx=relx_b, rely=0.2, relheight=0.08, relwidth=1.0)
 
-        update = Button(self.frame1, text ='Atualizar', bd=0)
+        update = Button(self.frame1, text ='Atualizar', bd=0, command=self.update_person)
         update.place(relx=relx_b, rely=0.3, relheight=0.08, relwidth=1.0)
 
-        delete = Button(self.frame1, text='Deletar', bd=0)
+        delete = Button(self.frame1, text='Deletar', bd=0, command=self.deletepessoa)
         delete.place(relx=relx_b, rely=0.4, relheight=0.08, relwidth=1.0)
 
 
@@ -150,10 +213,10 @@ class intercafe():
         insert = Button(self.frame1, text='Inserir', bd=0, command=self.inserirconta)
         insert.place(relx=relx_b, rely=0.2, relheight=0.08, relwidth=1.0)
 
-        update = Button(self.frame1, text ='Atualizar', bd=0)
+        update = Button(self.frame1, text ='Atualizar', bd=0, command=self.update_account)
         update.place(relx=relx_b, rely=0.3, relheight=0.08, relwidth=1.0)
 
-        delete = Button(self.frame1, text='Deletar', bd=0)
+        delete = Button(self.frame1, text='Deletar', bd=0, command=self.deleteconta)
         delete.place(relx=relx_b, rely=0.4, relheight=0.08, relwidth=1.0)
 
     
@@ -192,9 +255,10 @@ class intercafe():
             self.Table.column('#6', width=50)
             self.Table.column('#7', width=100)
             self.Table.place(relx=0.025, rely=0.01, relwidth=0.95, relheight=0.55)
-            scroolTable = Scrollbar(self.frame2, orient='vertical')
+            scroolTable = Scrollbar(self.frame2, orient='vertical', command=self.Table.yview)
             self.Table.configure(yscrollcommand = scroolTable.set)
             scroolTable.place(relx=0.97, rely=0.01, relwidth=0.95, relheight=0.55)
+            self.Table.bind("<Double-1>", self.clickduplopessoa)
             self.labelspessoa()
             self.butõespessoa()
             
@@ -260,9 +324,11 @@ class intercafe():
             self.Table2.column('#5', width=120)
             self.Table2.column('#6', width=100)
             self.Table2.place(relx=0.025, rely=0.01, relwidth=0.95, relheight=0.55)
-            scroolTable = Scrollbar(self.frame2, orient='vertical')
+            scroolTable = Scrollbar(self.frame2, orient='vertical', command=self.Table2.yview)
             self.Table2.configure(yscrollcommand = scroolTable.set)
             scroolTable.place(relx=0.97, rely=0.01, relwidth=0.95, relheight=0.55)
+            self.Table2.bind("<Double-1>", self.clickduploconta)
+
             self.labelsconta()
             self.butõesconta()
 
