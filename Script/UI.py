@@ -171,13 +171,13 @@ class intercafe():
     def Quit(self): 
         self.window.destroy()
 
-
     def config(self):
         self.window.geometry('800x520')
+        self.window.iconbitmap('database.ico')
         self.window.maxsize(width=800, height=520)
         #window.maxsize(width=width, height=height)
         self.window.minsize(width=600, height=370)
-        self.window.title('Database')
+        self.window.title('Database Management Center')
 
         #grid
         self.frame1 = Frame(self.window, bg='#ddd')
@@ -383,6 +383,3 @@ class intercafe():
         filemenu2.add_command(label='Pessoas', command=self.mostrar_tabela1)
         filemenu2.add_command(label='Contas', command=self.mostrar_tabela2)
         self.window.mainloop()
-
-
-intercafe()
