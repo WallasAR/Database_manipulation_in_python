@@ -12,6 +12,9 @@ window.iconbitmap('database_IconBlue.ico')
 def exit():
     window.destroy()
 
+def change_appearance_mode_event(new_appearance_mode: str):
+        customtkinter.set_appearance_mode(new_appearance_mode)
+
 def authenticate(user_var, pass_var, frame):
     if user_var == 'admin' and pass_var == 'admin':
         exit()
@@ -25,6 +28,12 @@ def login():
 
     frame = customtkinter.CTkFrame(master=window)
     frame.pack(padx=60, pady=20, fill='both', expand=True)
+
+    appearance_mode = customtkinter.CTkOptionMenu(master=window,values=['Light', 'Dark', 'System'],
+                                                                       command=change_appearance_mode_event)
+    appearance_mode.set('System')
+    appearance_mode.place(relx=0.0, rely=0.0)
+
 
     label = customtkinter.CTkLabel(frame, text='Fazer Login', font=('Consolas', 24))
     label.pack(padx=10, pady=10)
@@ -45,6 +54,7 @@ def login():
 
     button = customtkinter.CTkButton(frame, text='Entrar', font=('Roboto', 12), command=login_button_click)
     button.pack(padx=10, pady=10)
+
 
 login()
 window.mainloop()

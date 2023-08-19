@@ -1,6 +1,5 @@
 import sqlite3 as db
 import os
-import time
 
 conexão = db.connect('Database/Database.db')
 cursor = conexão.cursor()
@@ -42,32 +41,6 @@ def preencher_tabelas():
                 conexão.commit()
 
             arquivo.close()
-
-""" #Choise
-def escolhas():
-    os.system('cls')
-    print('\n\t   -----: Menu :-----')
-    print('\n[1] - Para inserir novos dados nas tabelas.')
-    print('[2] - Para deletar algum dado na tabela.')
-    print('[3] - Para alterar algum dado na tabela.')
-    print('[4] - Para fazer consulta.')
-    print('[5] - Sair')
-    opcao = input('> Escolha uma das opções acima: ')
-    if opcao == '1':
-        inserir_dados()
-    elif opcao == '2':
-        deletar_dados()
-    elif opcao == '3':
-        atualizar_dados()
-    elif opcao == '4':
-        consulta_save()
-    elif opcao == '5':
-        print('-- Saindo, até logo!')
-    elif opcao != '1':
-        os.system('cls')
-        print('\n[-] Valor inserido inválido! Tente novamente.\n')
-        escolhas()
-"""
 
 def consulta():
     cursor.execute(f"""SELECT * FROM pessoa""")
@@ -281,7 +254,6 @@ def consulta_save():
             print('\n[+] Consulta Salva: {}' .format(cons_sav))
     else:
         print('\n[-] Opção inválida!')
-        time.sleep(0.8)
         consulta_save()
 
     retorn = input('>> Deseja fazer mais alguma consulta (y/n)?: ')
@@ -289,7 +261,6 @@ def consulta_save():
         consulta_save()
     else:
         print('[+] Consultas Finalizadas! Voltando ao menu...')
-        time.sleep(2)
         #escolhas()
 
 def inserir_dados():
@@ -316,7 +287,6 @@ def inserir_dados():
     cursor.execute(f"""INSERT INTO conta(Agência, Número, Saldo, Gerente, Titular) VALUES('{agencia}', '{numero}', '{saldo}', '{gerente}', '{conta}')""")
     conexão.commit()
     print('\n[+] Dados inseridos com êxito!')
-    time.sleep(2)
     #escolhas()
 
 def deletar_dados():
@@ -328,7 +298,6 @@ def deletar_dados():
     cursor.execute(f"""DELETE FROM conta WHERE id='{con_delete}'""")
     conexão.commit()
     print('\n[+] Cliente com ID {} foi deletado com êxito!' .format(con_delete))
-    time.sleep(2)
     #escolhas()
 
 
@@ -381,7 +350,6 @@ def atualizar_dados():
         print('\n[+] Os dados foram atualizados!')
     else:
         print('\n[-] Opção inválida!')
-        time.sleep(2)
         atualizar_dados()
 
     des = input('\n>> Deseja continuar fazendo alterações (y/n)?')
@@ -389,7 +357,6 @@ def atualizar_dados():
         atualizar_dados()
     else:
         print('>> Okay! Voltando ao menu principal...')
-        time.sleep(2)
         #escolhas()
     
 
@@ -398,14 +365,12 @@ def criar_tabelas():
 
         os.system('cls')
         print('[*] Conectando-se ao banco de dados...')
-        #time.sleep(3)
         cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='pessoa';")
         cursor.execute("SELECT name FROM sqlite_master WHERE type='table' AND name='conta';")
         table_exist = bool(cursor.fetchone())
         if not table_exist:
 
             print('[~] Banco de dados não existe, criando...')
-            #time.sleep(5)
             cursor.execute("""CREATE TABLE pessoa(
                 id INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
                 cpf VARCHAR(11) NOT NULL,
@@ -442,4 +407,4 @@ def criar_tabelas():
         print('Ocorreu erro de: {}' .format(error))
     finally:
         if conexão:
-            conexão.close
+            conexão.close()

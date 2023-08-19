@@ -1,4 +1,4 @@
-from Index import *
+from Main import *
 from tkinter import *
 from tkinter import ttk
 import sqlite3 as banco
@@ -47,7 +47,9 @@ class intercafe():
         cursor.execute(f"""DELETE FROM Pessoa WHERE id= ?""", (delid,))
         self.clearInputs1
         self.Table.delete(*self.Table.get_children())
+        conexão.commit()
         self.mostrar_tabela1()
+        
 
 
 
@@ -56,6 +58,7 @@ class intercafe():
         cursor.execute(f"""DELETE FROM Conta WHERE id= ?""", (delid2,))
         self.clearInputs2
         self.Table2.delete(*self.Table2.get_children())
+        conexão.commit()
         self.mostrar_tabela2()
     
 
@@ -66,9 +69,9 @@ class intercafe():
         sobrenome = self.textInput_sobrenome.get()
         idade = self.textInput_age.get()
         conta = self.textInput_conta.get()
-        id = 1500
-        id +=1
-        cursor.execute(f""" INSERT INTO pessoa(id,cpf, primeiro_nome, nome_do_meio, sobrenome, Idade, conta) VALUES('{id}','{cpf}', '{nome}', '{nomedomeio}', '{sobrenome}', '{idade}', '{conta}')""")
+        cursor.execute(f""" INSERT INTO pessoa(cpf, primeiro_nome, nome_do_meio, sobrenome, Idade, conta) VALUES('{cpf}', '{nome}', '{nomedomeio}', '{sobrenome}', '{idade}', '{conta}')""")
+        conexão.commit()
+        self.mostrar_tabela1()
 
 
     def inserirconta(self):
@@ -77,10 +80,9 @@ class intercafe():
         saldo = self.textInput_saldo.get()
         gerente = self.textInput_gerente.get()
         titular = self.textInput_titular.get()
-        id = 1500
-        id +=1
-        cursor.execute(f""" INSERT INTO Conta(id,Agência, Número, Saldo, Gerente, Titular) VALUES('{id}','{agencia}', '{numero}', '{saldo}', '{gerente}', '{titular}')""")
-
+        cursor.execute(f""" INSERT INTO Conta(Agência, Número, Saldo, Gerente, Titular) VALUES('{agencia}', '{numero}', '{saldo}', '{gerente}', '{titular}')""")
+        conexão.commit()
+        self.mostrar_tabela2()
 
     def consultarpessoa(self):
         self.Table.delete(*self.Table.get_children())
@@ -90,7 +92,7 @@ class intercafe():
         buscartabela = cursor.fetchall()
         for i in buscartabela:
             self.Table.insert("", END, values=i)
-            self.clearInputs1()
+            self.clearInputs1()   
     
 
     def consultarconta(self):
@@ -114,6 +116,16 @@ class intercafe():
             self.Table.insert("", END, values=i)
             self.clearInputs1()
 
+    def buscarconta(self):
+        self.Table2.delete(*self.Table2.get_children())
+        self.textInput_id2.insert(END, "%")
+        id = self.textInput_id2.get()
+        cursor.execute(""" SELECT * FROM Conta WHERE id LIKE '%s' ORDER BY id""" %id)
+        buscartabela2 = cursor.fetchall()
+        for i in buscartabela2:
+            self.Table2.insert("", END, values=i)
+            self.clearInputs2()
+
     def update_person(self):
         update = self.textInput_id.get()
         cpf = self.textInput_cpf.get()
@@ -125,6 +137,7 @@ class intercafe():
         self.textInput_id.insert(END, "%")
         cursor.execute(f""" UPDATE Pessoa SET cpf = ?, sobrenome = ?, idade = ?, conta = ?, primeiro_nome = ?, nome_do_meio = ?  WHERE id = ?""", (cpf,sobrenome,idade,conta,nome,nomedomeio,update,))
         self.clearInputs1()
+        conexão.commit()
         self.mostrar_tabela1()
 
     def update_account(self):
@@ -137,17 +150,8 @@ class intercafe():
         self.textInput_id2.insert(END, "%")
         cursor.execute(f""" UPDATE Conta SET Agência = ?, Número = ?, Saldo = ?, Gerente = ?, Titular = ?  WHERE id = ?""", (agencia,numero,saldo,gerente,titular,update2,))
         self.clearInputs2()
+        conexão.commit()
         self.mostrar_tabela2()
-
-    def buscarconta(self):
-        self.Table2.delete(*self.Table2.get_children())
-        self.textInput_id2.insert(END, "%")
-        id = self.textInput_id2.get()
-        cursor.execute(""" SELECT * FROM Conta WHERE id LIKE '%s' ORDER BY id""" %id)
-        buscartabela2 = cursor.fetchall()
-        for i in buscartabela2:
-            self.Table2.insert("", END, values=i)
-            self.clearInputs2()
     
 
     def clearInputs1(self):
@@ -174,7 +178,7 @@ class intercafe():
     def config(self):
         self.window.geometry('800x520')
         self.window.iconbitmap('database.ico')
-        self.window.maxsize(width=800, height=520)
+        self.window.maxsize(width=900, height=700)
         #window.maxsize(width=width, height=height)
         self.window.minsize(width=600, height=370)
         self.window.title('Database Management Center')
@@ -229,7 +233,6 @@ class intercafe():
          
         self.frame2 = Frame(self.window, bg='#c9c9c9')
         self.frame2.place(relx=0.2, rely=0.0, relwidth=0.8, relheight=1.0)
-
 
     def mostrar_tabela1(self):
             self.frame1.destroy()
